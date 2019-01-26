@@ -1,4 +1,4 @@
-//! `no-std` VESC communication library
+//! VESC communication library
 
 #![no_std]
 #![deny(missing_docs)]
