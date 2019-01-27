@@ -3,6 +3,10 @@ name = "vesc-comm"
 version = "0.1.0"
 authors = ["Ferdia McKeogh <ferdia@mckeogh.tech>"]
 edition = "2018"
+keywords = ["embedded", "nostd", "robotics"]
+license = "GPL-3.0"
+homepage = "https://github.com/chocol4te/vesc-comm"
+description = "An embedded Rust library for communicating with VESCs"
 
 [dependencies]
 pruefung = { git = "https://github.com/althonos/pruefung.git" }
