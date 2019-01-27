@@ -15,21 +15,22 @@ use pruefung::{crc::Crc16, Hasher};
 pub mod responses;
 
 /// Connection to a VESC
-pub struct VescConnection<C> {
-    conn: C,
+pub struct VescConnection<R, W> {
+    r: R,
+    w: W,
 }
 
-impl<C: Read<u8> + Write<u8>> VescConnection<C> {
+impl<R: Read<u8>, W: Write<u8>> VescConnection<R, W> {
     /// Open a new connection with a VESC, currenly using embedded-hal Serial `Read` and `Write` traits
-    pub fn new(conn: C) -> Self {
-        VescConnection { conn }
+    pub fn new(r: R, w: W) -> Self {
+        VescConnection { r, w }
     }
 
     /// Send a command over a connection, might have a response (Need to improve this)
     pub fn get_fw_version(&mut self) -> nb::Result<responses::FwVersion, Error> {
-        write_packet(&[Command::FwVersion.value()], &mut self.conn)?;
+        write_packet(&[Command::FwVersion.value()], &mut self.w)?;
 
-        let payload = read_packet(&mut self.conn)?;
+        let payload = read_packet(&mut self.r)?;
 
         if payload[0] != Command::FwVersion.value() {
             return Err(nb::Error::Other(Error::ParseError));
@@ -57,9 +58,9 @@ impl<C: Read<u8> + Write<u8>> VescConnection<C> {
 
     /// Gets various sensor data from the VESC
     pub fn get_values(&mut self) -> nb::Result<responses::Values, Error> {
-        write_packet(&[Command::GetValues.value()], &mut self.conn)?;
+        write_packet(&[Command::GetValues.value()], &mut self.w)?;
 
-        let payload = read_packet(&mut self.conn)?;
+        let payload = read_packet(&mut self.r)?;
 
         if payload[0] != Command::GetValues.value() {
             return Err(nb::Error::Other(Error::ParseError));
