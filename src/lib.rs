@@ -10,7 +10,6 @@ use byteorder::{BigEndian, ByteOrder};
 use embedded_hal::serial::{Read, Write};
 use failure::Fail;
 use heapless::{consts::U128, Vec};
-use pruefung::{crc::Crc16, Hasher};
 
 pub mod responses;
 
@@ -91,14 +90,7 @@ impl<R: Read<u8>, W: Write<u8>> VescConnection<R, W> {
 
 // Constructs a packet from a payload (adds start/stop bytes, length and CRC)
 fn write_packet<W: Write<u8>>(payload: &[u8], w: &mut W) -> nb::Result<(), Error> {
-    let hash = {
-        let mut hasher: Crc16 = Default::default();
-        hasher.write(&payload);
-        let mut hash: [u8; 2] = [0; 2];
-        BigEndian::write_u16(&mut hash, hasher.finish() as u16);
-
-        hash
-    };
+    let hash = crc(&payload);
 
     // 2 for short packets and 3 for long packets
     block!(w.write(0x02)).ok();
@@ -149,14 +141,7 @@ fn read_packet<R: Read<u8>>(r: &mut R) -> nb::Result<Vec<u8, U128>, Error> {
 
     // Check CRC
     {
-        let calculated_hash = {
-            let mut hasher: Crc16 = Default::default();
-            hasher.write(&payload);
-            let mut hash: [u8; 2] = [0; 2];
-            BigEndian::write_u16(&mut hash, hasher.finish() as u16);
-
-            hash
-        };
+        let calculated_hash = crc(&payload);
 
         let read_hash = {
             let mut hash: [u8; 2] = [0; 2];
@@ -178,6 +163,13 @@ fn read_packet<R: Read<u8>>(r: &mut R) -> nb::Result<Vec<u8, U128>, Error> {
     }
 
     Ok(payload)
+}
+
+fn crc(payload: &[u8]) -> [u8; 2] {
+    let mut hash: [u8; 2] = [0; 2];
+    BigEndian::write_u16(&mut hash, crc16::State::<crc16::XMODEM>::calculate(&payload));
+
+    hash
 }
 
 /// Errors returned if a command fails
