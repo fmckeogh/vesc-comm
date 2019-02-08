@@ -1,6 +1,8 @@
 # vesc-comm
 > VESC communication library
 
+![crates.io](https://img.shields.io/crates/v/vesc-comm.svg)
+![docs.rs](https://docs.rs/vesc-comm/badge.svg)
 [![Build Status](https://travis-ci.org/chocol4te/vesc-comm.svg?branch=master)](https://travis-ci.org/chocol4te/vesc-comm)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=chocol4te/vesc-comm)](https://dependabot.com)
 
