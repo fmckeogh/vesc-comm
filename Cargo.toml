@@ -5,7 +5,7 @@ authors = ["Ferdia McKeogh <ferdia@mckeogh.tech>"]
 edition = "2018"
 keywords = ["nostd", "robotics", "embedded-hal-driver"]
 category = "embedded"
-license = "GPL-3.0"
+license = "MPL-2.0"
 homepage = "https://github.com/chocol4te/vesc-comm"
 description = "An embedded Rust library for communicating with VESCs"
 
