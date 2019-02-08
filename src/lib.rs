@@ -86,6 +86,18 @@ impl<R: Read<u8>, W: Write<u8>> VescConnection<R, W> {
             controller_id: 0,
         })
     }
+
+    /// Sets the forward current of the VESC
+    pub fn set_current(&mut self, val: u32) -> nb::Result<(), Error> {
+        let mut payload = [0u8; 5];
+        payload[0] = Command::SetCurrent.value();
+
+        BigEndian::write_u32(&mut payload[1..], val);
+
+        write_packet(&payload, &mut self.w)?;
+
+        Ok(())
+    }
 }
 
 // Constructs a packet from a payload (adds start/stop bytes, length and CRC)
