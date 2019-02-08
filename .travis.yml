@@ -10,7 +10,7 @@ install:
 
 script:
   - cargo fmt --all -- --check
-  - cargo test
+  - cargo check --target $TARGET_BUILD
 
 after_script: set +e
 
