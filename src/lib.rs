@@ -179,7 +179,10 @@ fn read_packet<R: Read<u8>>(r: &mut R) -> nb::Result<Vec<u8, U128>, Error> {
 
 fn crc(payload: &[u8]) -> [u8; 2] {
     let mut hash: [u8; 2] = [0; 2];
-    BigEndian::write_u16(&mut hash, crc16::State::<crc16::XMODEM>::calculate(&payload));
+    BigEndian::write_u16(
+        &mut hash,
+        crc16::State::<crc16::XMODEM>::calculate(&payload),
+    );
 
     hash
 }
