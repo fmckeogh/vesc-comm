@@ -1,16 +1,14 @@
 language: rust
 rust: nightly
-env: TARGET_BUILD=thumbv7m-none-eabi
 
 before_install: set -e
 
 install:
-  - rustup target add $TARGET_BUILD
   - rustup component add rustfmt
 
 script:
   - cargo fmt --all -- --check
-  - cargo check --target $TARGET_BUILD
+  - cargo check
 
 after_script: set +e
 
