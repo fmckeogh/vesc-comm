@@ -98,6 +98,18 @@ impl<R: Read<u8>, W: Write<u8>> VescConnection<R, W> {
 
         Ok(())
     }
+
+    /// Sets the duty cycle in 100ths of a percent
+    pub fn set_duty(&mut self, val: u32) -> nb::Result<(), Error> {
+        let mut payload = [0u8; 5];
+        payload[0] = Command::SetDuty.value();
+
+        BigEndian::write_u32(&mut payload[1..], val);
+
+        write_packet(&payload, &mut self.w)?;
+
+        Ok(())
+    }
 }
 
 // Constructs a packet from a payload (adds start/stop bytes, length and CRC)

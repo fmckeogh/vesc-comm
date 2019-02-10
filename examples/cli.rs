@@ -13,7 +13,6 @@ fn main() {
 
     dbg!(conn.get_fw_version()).ok();
     dbg!(conn.get_values()).ok();
-    dbg!(conn.set_current(100_000u32)).ok();
 }
 
 struct Port {
