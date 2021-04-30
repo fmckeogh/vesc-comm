@@ -19,4 +19,4 @@ heapless = { version = "0.4.1", features = ["const-fn"] }
 crc16 = "0.4.0"
 
 [dev-dependencies]
-serialport = "3.2.0"
+serialport = "4.0.1"
