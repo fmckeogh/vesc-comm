@@ -9,7 +9,7 @@ extern crate nb;
 use byteorder::{BigEndian, ByteOrder};
 use embedded_hal::serial::{Read, Write};
 use failure::Fail;
-use heapless::{consts::U128, Vec};
+use heapless::Vec;
 
 pub mod responses;
 
@@ -139,7 +139,7 @@ fn write_packet<W: Write<u8>>(payload: &[u8], w: &mut W) -> nb::Result<(), Error
 }
 
 // Reads a packet, checks it and returns it's payload
-fn read_packet<R: Read<u8>>(r: &mut R) -> nb::Result<Vec<u8, U128>, Error> {
+fn read_packet<R: Read<u8>>(r: &mut R) -> nb::Result<Vec<u8, 128>, Error> {
     let mut payload = Vec::new();
 
     // Read correct number of bytes into payload
